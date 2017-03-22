@@ -35,7 +35,7 @@ $ sbt test
 To add the `angular-facebook` binding to your project, add the following to your build.sbt:  
 
 ```sbt
-libraryDependencies += "io.scalajs.npm" %%% "angular-facebook" % "0.3.0.8"
+libraryDependencies += "io.scalajs.npm" %%% "angular-facebook" % "0.4.0-pre1"
 ```
 
 Optionally, you may add the Sonatype Repository resolver:
