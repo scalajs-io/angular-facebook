@@ -3,7 +3,6 @@ package io.scalajs.npm.angularjs.facebook
 import io.scalajs.dom.html.browser.console
 import io.scalajs.social.facebook._
 import io.scalajs.util.ScalaJsHelper._
-import io.scalajs.util.PromiseHelper.Implicits._
 import io.scalajs.npm.angularjs.Service
 
 import scala.concurrent.Promise
@@ -48,7 +47,7 @@ class FacebookService() extends Service {
   def getUserProfile = {
     val promise = Promise[FacebookProfileResponse]()
     FB.api(fbURL(), (response: js.UndefOr[FacebookProfileResponse]) => handleResponse(promise, response))
-    promise
+    promise.future
   }
 
   def login() = {
@@ -65,7 +64,7 @@ class FacebookService() extends Service {
   def logout() = {
     val promise = Promise[FacebookLoginStatusResponse]()
     FB.logout((response: js.UndefOr[FacebookLoginStatusResponse]) => handleResponse(promise, response))
-    promise
+    promise.future
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -82,7 +81,7 @@ class FacebookService() extends Service {
     val promise = Promise[FacebookAchievementResponse]()
     FB.api(fbURL(s"/achievements"),
            (response: js.UndefOr[FacebookAchievementResponse]) => handleResponse(promise, response))
-    promise
+    promise.future
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -93,7 +92,7 @@ class FacebookService() extends Service {
     val promise = Promise[FacebookResponse]()
     FB.api(fbURL(s"/$friendListId/member"),
            (response: js.UndefOr[FacebookResponse]) => handleResponse(promise, response))
-    promise
+    promise.future
   }
 
   def getFriends = {
@@ -118,14 +117,14 @@ class FacebookService() extends Service {
     val promise = Promise[FacebookResponse]()
     FB.api(fbURL("/friendlists", s"list_type=$listType"),
            (response: js.UndefOr[FacebookResponse]) => handleResponse(promise, response))
-    promise
+    promise.future
   }
 
   def getFriendListMembers(friendListId: String) = {
     val promise = Promise[FacebookResponse]()
     FB.api(fbURL(s"/$friendListId/members"),
            (response: js.UndefOr[FacebookResponse]) => handleResponse(promise, response))
-    promise
+    promise.future
   }
 
   /**
@@ -148,7 +147,7 @@ class FacebookService() extends Service {
       handlePaginatedResults(response, callback)
       promise.success(friends)
     })
-    promise
+    promise.future
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -165,7 +164,7 @@ class FacebookService() extends Service {
     val promise = Promise[FacebookPhotosResponse]()
     FB.api(fbURL("/photos", `type` map (myType => s"type=$myType")),
            (response: FacebookPhotosResponse) => handleResponse(promise, response))
-    promise
+    promise.future
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -184,21 +183,21 @@ class FacebookService() extends Service {
     val promise = Promise[FacebookResponse]()
     FB.ui(FacebookCommand(app_id = appID, method = "feed", link = link, caption = caption),
           (response: js.UndefOr[FacebookResponse]) => handleResponse(promise, response))
-    promise
+    promise.future
   }
 
   def send(appID: String, message: String, link: String) = {
     val promise = Promise[FacebookResponse]()
     FB.ui(FacebookCommand(app_id = appID, method = "send", link = link),
           (response: js.UndefOr[FacebookResponse]) => handleResponse(promise, response))
-    promise
+    promise.future
   }
 
   def share(appID: String, link: String) = {
     val promise = Promise[FacebookResponse]()
     FB.ui(FacebookCommand(app_id = appID, method = "share", href = link),
           (response: js.UndefOr[FacebookResponse]) => handleResponse(promise, response))
-    promise
+    promise.future
   }
 
   ///////////////////////////////////////////////////////////////////////////
